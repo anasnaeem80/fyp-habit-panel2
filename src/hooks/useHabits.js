@@ -3,8 +3,15 @@ import { useLocalStorage } from "./useLocalStorage";
 import { habits as initialHabits } from "../data/mockData";
 
 export const useHabits = () => {
-  const [habits, setHabits] = useLocalStorage("habits", initialHabits);
+  const [habits, setHabits] = useLocalStorage("habits", []);
   const [selectedHabit, setSelectedHabit] = useState(null);
+
+  // Initialize with mock data if no habits exist
+  useEffect(() => {
+    if (habits.length === 0) {
+      setHabits(initialHabits);
+    }
+  }, [habits.length, setHabits]);
 
   const addHabit = (habit) => {
     const newHabit = {
@@ -27,7 +34,22 @@ export const useHabits = () => {
   };
 
   const deleteHabit = (id) => {
-    setHabits(habits.filter((habit) => habit.id !== id));
+    // Prevent deleting the default mock habits
+    const habitToDelete = habits.find((habit) => habit.id === id);
+    const isMockHabit = initialHabits.some((mockHabit) => mockHabit.id === id);
+
+    if (isMockHabit) {
+      // Instead of deleting, reset the mock habit
+      const originalHabit = initialHabits.find(
+        (mockHabit) => mockHabit.id === id
+      );
+      setHabits(
+        habits.map((habit) => (habit.id === id ? { ...originalHabit } : habit))
+      );
+    } else {
+      // Delete user-created habits normally
+      setHabits(habits.filter((habit) => habit.id !== id));
+    }
   };
 
   const toggleHabitCompletion = (id, dayIndex) => {

@@ -8,6 +8,7 @@ import {
   BookOpen,
   Trophy,
   Bot,
+  Ship,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -24,13 +25,33 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className='w-64 bg-blue-900 text-white h-screen fixed left-0 top-0 p-6'>
-      <div className='mb-10'>
-        <h1 className='text-2xl font-bold'>DeepMotive</h1>
-        <p className='text-blue-200 text-sm'>Habit Mastery</p>
+    <div className='w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white h-screen fixed left-0 top-0 p-6 border-r border-blue-700'>
+      {/* Submarine Header */}
+      <div className='mb-8'>
+        <div className='flex items-center justify-center mb-4'>
+          <div className='w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center mr-3'>
+            <Ship size={24} className='text-white' />
+          </div>
+          <h1 className='text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent'>
+            DeepMotive
+          </h1>
+        </div>
+        <div className='bg-blue-700 rounded-lg p-3'>
+          <div className='flex items-center justify-between mb-2'>
+            <span className='text-sm text-blue-200'>Depth:</span>
+            <span className='font-semibold text-cyan-300'>1,240m</span>
+          </div>
+          <div className='w-full bg-blue-600 rounded-full h-2'>
+            <div
+              className='bg-gradient-to-r from-cyan-400 to-blue-400 h-2 rounded-full'
+              style={{ width: "65%" }}
+            ></div>
+          </div>
+        </div>
       </div>
 
-      <nav className='space-y-2'>
+      {/* Navigation */}
+      <nav className='space-y-1'>
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
@@ -39,27 +60,30 @@ const Sidebar = () => {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+              className={`flex items-center space-x-3 p-3 rounded-lg transition-all ${
                 isActive
-                  ? "bg-blue-700 text-white"
-                  : "text-blue-200 hover:bg-blue-800 hover:text-white"
+                  ? "bg-blue-600 shadow-lg"
+                  : "text-blue-200 hover:bg-blue-700 hover:text-white"
               }`}
             >
-              <Icon size={20} />
-              <span>{item.label}</span>
+              <Icon size={20} className={isActive ? "text-cyan-300" : ""} />
+              <span className={isActive ? "font-semibold" : ""}>
+                {item.label}
+              </span>
             </Link>
           );
         })}
       </nav>
 
+      {/* Submarine Status Footer */}
       <div className='absolute bottom-6 left-6 right-6'>
-        <div className='p-4 bg-blue-800 rounded-lg'>
-          <div className='w-12 h-12 bg-blue-600 rounded-full mx-auto mb-3 flex items-center justify-center'>
-            <div className='w-3 h-3 bg-green-400 rounded-full'></div>
+        <div className='bg-blue-700 rounded-lg p-3 border border-blue-600 text-center'>
+          <div className='flex items-center justify-center mb-1'>
+            <div className='w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2'></div>
+            <span className='text-xs text-blue-300'>
+              All systems operational
+            </span>
           </div>
-          <p className='text-center text-sm text-blue-200'>
-            Submarine Level: 5
-          </p>
         </div>
       </div>
     </div>
